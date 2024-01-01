@@ -72,7 +72,17 @@ const register = async (req, res) => {
 
 //----LOGOUT
 const logout = async (req, res) => {
+    try {
+        // Clear the access token cookie
+        res.clearCookie("accessToken", {
+          secure: true,
+          sameSite: "none",
+        });
 
+        res.status(200).json("User has been logged out.");
+      } catch (error) {
+        res.status(500).json(`Error logging out: ${error.message}`);
+      }
 }
  
 
