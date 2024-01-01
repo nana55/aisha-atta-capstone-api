@@ -6,7 +6,7 @@ const userRoutes = require ("./routes/users.js");
 const goalRoutes = require ("./routes/goals.js");
 const commentRoutes = require ("./routes/comments.js");
 const likeRoutes = require ("./routes/likes.js");
-const starRoutes = ("./routes/stars.js");
+const starRoutes = require ("./routes/stars.js");
 const cors = require ("cors");
 const PORT = process.env.PORT || 5050;
 
@@ -26,11 +26,11 @@ const PORT = process.env.PORT || 5050;
 app.use(cors());
 app.use(express.json());
 
-// app.use('/api/users', userRoutes);
-// app.use("/api/auth", authRoutes);
-// app.use("/api/users", goalRoutes);
-// app.use("/api/comments", commentRoutes);
-// app.use("/api/likes", likeRoutes);
+app.use('/api/users', userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", goalRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/likes", likeRoutes);
 app.use("/api/stars", starRoutes);
 
 app.listen(PORT, () => {

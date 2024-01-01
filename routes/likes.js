@@ -1,8 +1,8 @@
 const router = require('express').Router();
+const likeController = require('../controllers/likes.js');
 
-
-router.get("/",(req,res) =>{
-    res.send("Likes works!")
-})
+router
+    .route("/")
+    .get(likeController.index);
 
 module.exports = router;

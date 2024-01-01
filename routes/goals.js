@@ -1,8 +1,8 @@
 const router = require('express').Router();
+const goalController = require('../controllers/goals.js');
 
-
-router.get("/",(req,res) =>{
-    res.send("Goals works!")
-})
+router
+    .route("/")
+    .get(goalController.index);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const router = require('express').Router();
+const userController = require('../controllers/users.js');
 
-
-router.get("/",(req,res) =>{
-    res.send("Users works!")
-})
+router
+    .route("/")
+    .get(userController.index);
 
 module.exports = router;
