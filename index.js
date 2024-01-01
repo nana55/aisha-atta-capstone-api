@@ -9,7 +9,7 @@ const likeRoutes = require ("./routes/likes.js");
 const starRoutes = require ("./routes/stars.js");
 const cors = require ("cors");
 const PORT = process.env.PORT || 5050;
-
+const cookieParser = require('cookie-parser');
 
 // app.use( (req, res, next) => {
 //     console.log("Using Middleware for incoming requests - paths & time")
@@ -25,6 +25,7 @@ const PORT = process.env.PORT || 5050;
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use("/api/auth", authRoutes);
