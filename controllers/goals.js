@@ -1,5 +1,6 @@
 const knex = require('knex')(require('../knexfile'));
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 const index = async (req, res) => {
     const token = req.cookies.accessToken;
@@ -21,6 +22,36 @@ const index = async (req, res) => {
     }
 }
 
+//-----Create New Goal
+const create = async (req, res) => {
+    const token = req.cookies.accessToken;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized - No token provided' });
+    }
+
+    try {
+        //Verify JWT token
+        const decoded = jwt.verify(token, 'secretkey');
+        console.log("Received Token:", decoded);
+
+        const newGoal = {
+            description: req.body.description,
+            category: req.body.category,
+            image: req.body.image,
+            user_id: decoded.id, 
+            created_at: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
+        };
+        const insertedGoal = await knex('goals').insert(newGoal);
+            
+        res.status(201).json({ message: 'Goal created successfully', goal: insertedGoal });
+    } catch (err) {
+        res.status(400).send(`Error creating goal: ${err}`)
+    }
+}
+
+
 module.exports = {
     index,
+    create,
 }
