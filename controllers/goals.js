@@ -15,7 +15,8 @@ const index = async (req, res) => {
         console.log("Received Token:", decoded);
         const data = await knex('goals')
             .select('goals.*', 'users.name as userName', 'users.avatar')
-            .join('users', 'goals.user_id', 'users.id');
+            .join('users', 'goals.user_id', 'users.id')
+            .orderBy('goals.created_at', 'desc');;
         res.status(200).json(data);
     } catch (err) {
         res.status(400).send(`Error retrieving goals data: ${err}`)
