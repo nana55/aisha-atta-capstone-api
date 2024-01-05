@@ -56,13 +56,25 @@ const deleteLike = async (req, res) => {
         const decoded = jwt.verify(token, 'secretkey');
         console.log("Received Token:", decoded);
 
+        // Find the like entry before deletion
         const deletedLike = await knex('likes')
             .where({
                 user_like_id: decoded.id,
                 goals_like_id: req.body.goals_like_id
             })
-            .delete()
-            .returning('*');
+            .first();
+
+        if (!deletedLike) {
+            return res.status(404).json({ message: 'Like entry not found' });
+        }
+
+        // Delete the like entry
+        await knex('likes')
+            .where({
+                user_like_id: decoded.id,
+                goals_like_id: req.body.goals_like_id
+            })
+            .delete();
 
         res.status(200).json({ message: 'Like entry has been deleted successfully', deletedLike });
     } catch (err) {
