@@ -39,10 +39,39 @@ const addLike = async (req, res) => {
 
         res.status(201).json({ message: 'Like entry has been added successfully', like: insertedLike });
     } catch (err) {
-        res.status(400).send(`Error creating goal: ${err}`)
+        res.status(400).send(`Error creating Likes: ${err}`)
     }
 }
+
+//-----Add Likes Comment
+const deleteLike = async (req, res) => {
+    const token = req.cookies.accessToken;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized - No token provided' });
+    }
+
+    try {
+        //Verify JWT token
+        const decoded = jwt.verify(token, 'secretkey');
+        console.log("Received Token:", decoded);
+
+        const deletedLike = await knex('likes')
+            .where({
+                user_like_id: decoded.id,
+                goals_like_id: req.body.goals_like_id
+            })
+            .delete()
+            .returning('*');
+
+        res.status(200).json({ message: 'Like entry has been deleted successfully', deletedLike });
+    } catch (err) {
+        res.status(400).send(`Error deleting likes: ${err}`)
+    }
+}
+
 module.exports = {
     getLikes,
     addLike,
+    deleteLike,
 }
