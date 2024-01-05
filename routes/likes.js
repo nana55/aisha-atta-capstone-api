@@ -3,6 +3,6 @@ const likeController = require('../controllers/likes.js');
 
 router
     .route("/")
-    .get(likeController.index);
+    .get(likeController.getLikes);
 
 module.exports = router;

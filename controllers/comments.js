@@ -2,18 +2,23 @@ const knex = require('knex')(require('../knexfile'));
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 
-const getComments = async (_req, res) => {
+
+//------Get comments by Goal
+const getCommentsByGoal = async (req, res) => {
     try {
+        const { goalId } = req.query;
+
         const data = await knex('comments')
             .select('comments.*', 'users.id as user_comment_id', 'users.name as userName', 'users.avatar')
             .join('users', 'comments.user_comment_id', 'users.id')
-            .join('goals', 'comments.goals_comment_id', 'goals.id')
-            .orderBy('comments.created_at', 'desc');;
+            .where('comments.goals_comment_id', goalId)
+            .orderBy('comments.created_at', 'desc');
+
         res.status(200).json(data);
     } catch (err) {
-        res.status(400).send(`Error retrieving Comments data: ${err}`)
+        res.status(400).send(`Error retrieving Comments data: ${err}`);
     }
-}
+};
 
 //-----Add New Comment
 const addComment = async (req, res) => {
@@ -43,6 +48,6 @@ const addComment = async (req, res) => {
 }
 
 module.exports = {
-    getComments,
+    getCommentsByGoal,
     addComment,
 }

@@ -1,14 +1,23 @@
 const knex = require('knex')(require('../knexfile'));
+const jwt = require('jsonwebtoken');
 
-const index = async (_req, res) => {
+const getLikes = async (req, res) => {
     try {
-        const data = await knex('likes');
-        res.status(200).json(data);
+        const { goalId } = req.query;
+
+        const likeCount = await knex('likes')
+            .count('id as count') 
+            .where('goals_like_id', goalId)
+            .first();
+
+        const count = likeCount.count;
+
+        res.status(200).json({ count });
     } catch (err) {
-        res.status(400).send(`Error retrieving Stars data: ${err}`)
+        res.status(400).send(`Error retrieving likes count: ${err}`);
     }
-}
+};
 
 module.exports = {
-    index,
+    getLikes,
 }
