@@ -5,14 +5,13 @@ const getLikes = async (req, res) => {
     try {
         const { goalId } = req.query;
 
-        const likeCount = await knex('likes')
-            .count('id as count') 
-            .where('goals_like_id', goalId)
-            .first();
+        const likesData = await knex('likes')
+            .select('user_like_id')  
+            .where('goals_like_id', goalId);
 
-        const count = likeCount.count;
+        const likeCount = likesData.length;  
 
-        res.status(200).json({ count });
+        res.status(200).json({ count: likeCount, userIds: likesData.map(like => like.user_like_id) });
     } catch (err) {
         res.status(400).send(`Error retrieving likes count: ${err}`);
     }
@@ -29,11 +28,16 @@ const addLike = async (req, res) => {
     try {
         //Verify JWT token
         const decoded = jwt.verify(token, 'secretkey');
-        console.log("Received Token:", decoded);
+
+        const goalsLikeId = req.body.goals_like_id;  
+
+        if (!goalsLikeId) {
+            return res.status(400).json({ message: 'Missing goals_like_id in the request body' });
+        }
 
         const newLikeData = {
             user_like_id: decoded.id,
-            goals_like_id: req.body.goals_like_id
+            goals_like_id: goalsLikeId
         };
         const insertedLike = await knex('likes').insert(newLikeData);
 
@@ -43,7 +47,7 @@ const addLike = async (req, res) => {
     }
 }
 
-//-----Add Likes Comment
+//-----Delete Likes 
 const deleteLike = async (req, res) => {
     const token = req.cookies.accessToken;
 
@@ -54,13 +58,13 @@ const deleteLike = async (req, res) => {
     try {
         //Verify JWT token
         const decoded = jwt.verify(token, 'secretkey');
-        console.log("Received Token:", decoded);
+        const { goals_like_id } = req.body;
 
         // Find the like entry before deletion
         const deletedLike = await knex('likes')
             .where({
                 user_like_id: decoded.id,
-                goals_like_id: req.body.goals_like_id
+                goals_like_id: goals_like_id
             })
             .first();
 
@@ -72,7 +76,7 @@ const deleteLike = async (req, res) => {
         await knex('likes')
             .where({
                 user_like_id: decoded.id,
-                goals_like_id: req.body.goals_like_id
+                goals_like_id: goals_like_id
             })
             .delete();
 
