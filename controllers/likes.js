@@ -18,6 +18,31 @@ const getLikes = async (req, res) => {
     }
 };
 
+//-----Add Likes Comment
+const addLike = async (req, res) => {
+    const token = req.cookies.accessToken;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized - No token provided' });
+    }
+
+    try {
+        //Verify JWT token
+        const decoded = jwt.verify(token, 'secretkey');
+        console.log("Received Token:", decoded);
+
+        const newLikeData = {
+            user_like_id: decoded.id,
+            goals_like_id: req.body.goals_like_id
+        };
+        const insertedLike = await knex('likes').insert(newLikeData);
+
+        res.status(201).json({ message: 'Like entry has been added successfully', like: insertedLike });
+    } catch (err) {
+        res.status(400).send(`Error creating goal: ${err}`)
+    }
+}
 module.exports = {
     getLikes,
+    addLike,
 }
