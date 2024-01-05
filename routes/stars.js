@@ -3,6 +3,8 @@ const starController = require('../controllers/stars.js');
 
 router
     .route("/")
-    .get(starController.index);
+    .get(starController.getStars)
+    .post(starController.addStar)
+    .delete(starController.deleteStar);
 
 module.exports = router;
