@@ -3,7 +3,16 @@ const goalController = require('../controllers/goals.js');
 
 router
     .route("/")
-    .get(goalController.index)
+    .get(goalController.getAllGoals)
     .post(goalController.create);
+
+// router
+//     .route("/user/:userId")
+//     .get(goalController.getGoalsbyId);
+
+router
+    .route("/userid")
+    .get(goalController.getGoalsbyId);
+
 
 module.exports = router;

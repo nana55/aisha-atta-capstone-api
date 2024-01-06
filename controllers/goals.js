@@ -2,7 +2,7 @@ const knex = require('knex')(require('../knexfile'));
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 
-const index = async (req, res) => {
+const getAllGoals = async (req, res) => {
     const token = req.cookies.accessToken;
 
     if (!token) {
@@ -16,7 +16,7 @@ const index = async (req, res) => {
         const data = await knex('goals')
             .select('goals.*', 'users.name as userName', 'users.avatar')
             .join('users', 'goals.user_id', 'users.id')
-            .orderBy('goals.created_at', 'desc');;
+            .orderBy('goals.created_at', 'desc');
         res.status(200).json(data);
     } catch (err) {
         res.status(400).send(`Error retrieving goals data: ${err}`)
@@ -51,8 +51,33 @@ const create = async (req, res) => {
     }
 }
 
+//---Get Goals by UserID
+const getGoalsbyId = async (req, res) => {
+    // const userId = req.params.userId;
+   
+    const token = req.cookies.accessToken;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized - No token provided' });
+    }
+
+    try {
+        //Verify JWT token
+        const decoded = jwt.verify(token, 'secretkey'); 
+        const data = await knex('goals')
+            .select('goals.*', 'users.name as userName', 'users.avatar')
+            .join('users', 'goals.user_id', 'users.id')
+            .where('users.id', decoded.id)
+            .orderBy('goals.created_at', 'desc');
+        res.status(200).json(data);
+    } catch (err) {
+        res.status(400).send(`Error retrieving goals data: ${err}`)
+    }
+}
+
 
 module.exports = {
-    index,
+    getAllGoals,
     create,
+    getGoalsbyId,
 }
