@@ -6,9 +6,9 @@ router
     .get(goalController.getAllGoals)
     .post(goalController.create);
 
-// router
-//     .route("/user/:userId")
-//     .get(goalController.getGoalsbyId);
+    router
+    .route("/user/:userId")
+    .get(goalController.getGoalsbyAnyId);
 
 router
     .route("/userid")

@@ -51,9 +51,8 @@ const create = async (req, res) => {
     }
 }
 
-//---Get Goals by UserID
+//---Get Goals by UserID for Logged In User
 const getGoalsbyId = async (req, res) => {
-    // const userId = req.params.userId;
    
     const token = req.cookies.accessToken;
 
@@ -75,9 +74,36 @@ const getGoalsbyId = async (req, res) => {
     }
 }
 
+//---Get Goals by UserID for Any User using params
+const getGoalsbyAnyId = async (req, res) => {
+    const userIdFromParams = req.params.userId;
+
+    const token = req.cookies.accessToken;
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized - No token provided' });
+    }
+
+    try {
+        // Verify JWT token
+        const decoded = jwt.verify(token, 'secretkey');
+        
+        const data = await knex('goals')
+            .select('goals.*', 'users.name as userName', 'users.avatar', 'users.id as userId')
+            .join('users', 'goals.user_id', 'users.id')
+            .where('users.id', userIdFromParams)
+            .orderBy('goals.created_at', 'desc');
+
+        res.status(200).json(data);
+    } catch (err) {
+        res.status(400).send(`Error retrieving goals data: ${err}`);
+    }
+};
+
 
 module.exports = {
     getAllGoals,
     create,
     getGoalsbyId,
+    getGoalsbyAnyId,
 }

@@ -1,5 +1,9 @@
 exports.up = function (knex) {
     return knex.schema
+        .hasTable("users")
+        .then((exists) => {
+            if (!exists) {
+    return knex.schema
         .createTable("users", (table) => {
             table.increments("id").primary();
             table.string("name").notNullable();
@@ -85,6 +89,8 @@ exports.up = function (knex) {
                 .onDelete("CASCADE");
             table.integer("count");
         });
+    }
+});
 };
 
 exports.down = function (knex) {
