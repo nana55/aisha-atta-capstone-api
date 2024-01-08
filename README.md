@@ -8,15 +8,13 @@
   
 The project aims to create a commitment management forum for individuals to set and achieve goals. Users can share their goals, progress, and receive encouragement and rewards from the community, mimicking the real-world scenario of family members supporting each other.
 
-![enter image description here](https://www.canva.com/design/DAF5RrzmM_o/7vhhyJnQTNDV7stZQYmJbg/edit?utm_content=DAF5RrzmM_o&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+![Website mockup](https://www.canva.com/design/DAF5RrzmM_o/7vhhyJnQTNDV7stZQYmJbg/edit?utm_content=DAF5RrzmM_o&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
   
 
 ### Problem
 
-  
-
-Many people struggle with motivation and accountability when pursuing personal goals. This app addresses the need for a platform where users can share their goals, receive motivation, and track their progress.
+ Many people struggle with motivation and accountability when pursuing personal goals. This app addresses the need for a platform where users can share their goals, receive motivation, and track their progress.
 
 ## Installation
   
@@ -233,8 +231,9 @@ https://www.canva.com/design/DAF3dNmrk8I/GZPSPElOcyfuPXyMKDZ9-A/view?utm_content
 ## Nice-to-haves
 
   
-- Reward system: Implement a reward mechanism where users can offer virtual gifts to each other for completing milestones or gift cards.
--   Mobile responsiveness for broader accessibility.
--   Notifications for goal updates and community interactions.
--   Advanced privacy settings for user goals.
--   Modify goals and user profiles
+- Reward system: Implement a reward mechanism where users can offer virtual gifts to each other for completing milestones or gift cards
+-   Mobile responsiveness for broader accessibility
+-   Notifications for goal updates and community interactions
+-   Advanced privacy settings for user goals
+-   Option to modify goals and user profiles
+-   Additonal stats on the dashboard
