@@ -7,6 +7,7 @@ const goalRoutes = require("./routes/goals.js");
 const commentRoutes = require("./routes/comments.js");
 const likeRoutes = require("./routes/likes.js");
 const starRoutes = require("./routes/stars.js");
+const progressRoute = require("./routes/progress.js");
 const cors = require("cors");
 const PORT = process.env.PORT || 5050;
 const cookieParser = require('cookie-parser');
@@ -30,6 +31,7 @@ app.use("/api/goals", goalRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/stars", starRoutes);
+app.use("/api/progress", progressRoute);
 
 app.listen(PORT, () => {
     console.log(`running at http://localhost:${PORT}`);
